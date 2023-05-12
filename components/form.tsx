@@ -50,7 +50,7 @@ function form() {
     }
     return (
         <>
-            <Flex  justify="center"  align='center' h="100%" >
+            <Flex justify="center" align='center' h="100%" >
 
                 <Formik
                     initialValues={initialValues}
@@ -71,8 +71,18 @@ function form() {
                 >
                     {({ handleSubmit, values, errors }) => (
                         <form onSubmit={handleSubmit}>
-                            <VStack spacing={10} align="flex-start" borderColor='black.500' borderWidth="2px" width="100%" borderRadius="2rem" padding="1rem">
+
+                            <div className="flex flex-col gap rounded-3xl p-5 bg-white mb-10">
+
+
                                 <FormControl isRequired>
+                                    <div className="flex flex-col gap-0   pb-10">
+
+                                        <h1 className='text-xl font-bold leading-[.5rem] pl-1 text-gray-400'>create a </h1>
+                                        <h1 className=' text-5xl font-extrabold leading-[3.5rem]  animate-text bg-gradient-to-r from-teal-500
+                                         via-purple-500 to-orange-500 bg-clip-text text-transparent '>Grateful thought</h1>
+                                         <h3 className='text-xl font-bold text-gray-400 pl-1 leading-[.8rem] '>for your loved ones</h3>
+                                    </div>
                                     <FormLabel htmlFor="category">Select an option</FormLabel>
                                     <SelectControl name="category">
                                         <option value="person">Person</option>
@@ -191,7 +201,7 @@ function form() {
                                 <Button type="submit" colorScheme="purple" width="full">
                                     Generate Thought
                                 </Button>
-                            </VStack>
+                            </div>
                         </form>
                     )}
                 </Formik>
