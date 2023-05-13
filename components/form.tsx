@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { Formik, Field } from "formik"
 import {
@@ -48,7 +48,12 @@ function form() {
     ) {
         console.log(personName)
     }
+    useEffect(() => {
+        
+    }, [])
+    
     return (
+        
         <>
             <Flex justify="center" align='center' h="100%" >
 
@@ -75,23 +80,24 @@ function form() {
                             <div className="flex flex-col gap rounded-3xl p-5 bg-white mb-10">
 
 
-                                <FormControl isRequired>
-                                    <div className="flex flex-col gap-0   pb-10">
+                                <div className='flex flex-col text-gray-800'>
+                                    <div className="flex flex-col gap-0   pb-10 ">
 
-                                        <h1 className='text-xl font-bold leading-[.5rem] pl-1 text-gray-400'>create a </h1>
-                                        <h1 className=' text-5xl font-extrabold leading-[3.5rem]  animate-text bg-gradient-to-r from-teal-500
-                                         via-purple-500 to-orange-500 bg-clip-text text-transparent '>Grateful thought</h1>
-                                         <h3 className='text-xl font-bold text-gray-400 pl-1 leading-[.8rem] '>for your loved ones</h3>
+                                        <h1 className='text-xl font-bold leading-[.5rem] pl-1 text-gray-600'>create a </h1>
+                                        <h1 className=' text-5xl font-black leading-[3.5rem]  animate-text bg-gradient-to-r from-teal-700
+                                         via-purple-800 to-orange-400 bg-clip-text text-transparent '>Grateful thought</h1>
+                                         <h3 className='text-xl font-extrabold bg-gradient-to-r from-purple-700 leading-[1.4rem] pl-1 bg-clip-text text-transparent '>for your love ones</h3>
                                     </div>
-                                    <FormLabel htmlFor="category">Select an option</FormLabel>
-                                    <SelectControl name="category">
+                                    <label id='select-category' htmlFor='category' className='font-bold pb-1 pl-2  text-sm text-gray-500'>Select an option</label>
+                                    <select name="category" id="category" onChange={(event) => {console.log(event.target.value)}} 
+                                    className=' bg-indigo-50  border-indigo-900 border-spacing-2 text-gray-900 font-bold rounded-xl px-4 py-3 outline-dashed outline-2 mb-3' >
                                         <option value="person">Person</option>
                                         <option value="pet">Pet</option>
                                         <option value="place">Place</option>
                                         <option value="thing">Thing</option>
-                                    </SelectControl>
-                                    <FormErrorMessage>{errors.category}</FormErrorMessage>
-                                </FormControl>
+                                    </select>
+                                  
+                                </div>
                                 {values.category === "person" && (
                                     <>
                                         <FormControl isRequired>
