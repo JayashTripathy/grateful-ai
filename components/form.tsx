@@ -30,8 +30,8 @@ function form() {
     const initialValues = {
         category: "person",
         personName: "",
-        personPronoun: "she/her",
-        petType: "",
+        personPronoun: "he/his",
+
         petName: "",
         placeName: "",
         thingName: "",
@@ -41,7 +41,6 @@ function form() {
         category: string,
         personName: string,
         personPronoun: string,
-        petType: string,
         petName: string,
         placeName: string,
         thingName: string
@@ -49,11 +48,11 @@ function form() {
         console.log(personName)
     }
     useEffect(() => {
-        
+
     }, [])
-    
+
     return (
-        
+
         <>
             <Flex justify="center" align='center' h="100%" >
 
@@ -64,20 +63,19 @@ function form() {
                             values["category"],
                             values["personName"],
                             values["personPronoun"],
-                            values["petType"],
                             values["petName"],
                             values["placeName"],
                             values["thingName"]
                         )
-
+                        console.log(values)
                         resetForm()
                     }}
                 // validationSchema={validationSchema}
                 >
-                    {({ handleSubmit, values, errors }) => (
+                    {({ handleSubmit, handleChange, values, errors }) => (
                         <form onSubmit={handleSubmit}>
 
-                            <div className="flex flex-col gap rounded-3xl p-5 bg-white mb-10">
+                            <div className="flex flex-col gap-3 rounded-3xl p-5 bg-white mb-10">
 
 
                                 <div className='flex flex-col text-gray-800'>
@@ -86,82 +84,51 @@ function form() {
                                         <h1 className='text-xl font-bold leading-[.5rem] pl-1 text-gray-600'>create a </h1>
                                         <h1 className=' text-5xl font-black leading-[3.5rem]  animate-text bg-gradient-to-r from-teal-700
                                          via-purple-800 to-orange-400 bg-clip-text text-transparent '>Grateful thought</h1>
-                                         <h3 className='text-xl font-extrabold bg-gradient-to-r from-purple-700 leading-[1.4rem] pl-1 bg-clip-text text-transparent '>for your love ones</h3>
+                                        <h3 className='text-xl font-extrabold bg-gradient-to-r from-purple-700 leading-[1.4rem] pl-1 bg-clip-text text-transparent '>for your love ones</h3>
                                     </div>
                                     <label id='select-category' htmlFor='category' className='font-bold pb-1 pl-2  text-sm text-gray-500'>Select an option</label>
-                                    <select name="category" id="category" onChange={(event) => {console.log(event.target.value)}} 
-                                    className=' bg-indigo-50  border-indigo-900 border-spacing-2 text-gray-900 font-bold rounded-xl px-4 py-3 outline-dashed outline-2 mb-3' >
+                                    <select name="category" id="category"
+                                        className=' bg-indigo-50  border-indigo-900 border-spacing-2 text-gray-900 font-bold rounded-xl px-4 py-3 outline-dashed outline-2 mb-3'
+                                        onChange={handleChange} value={values.category} >
                                         <option value="person">Person</option>
                                         <option value="pet">Pet</option>
                                         <option value="place">Place</option>
                                         <option value="thing">Thing</option>
                                     </select>
-                                  
+
                                 </div>
                                 {values.category === "person" && (
                                     <>
-                                        <FormControl isRequired>
-                                            <FormLabel htmlFor="personName">
-                                                What is their name?
-                                            </FormLabel>
-                                            <Field
-                                                as={Input}
-                                                id="personName"
-                                                name="personName"
-                                                type="name"
-                                                variant="filled"
-                                                bg="gray.200"
-                                            />
-                                            <FormErrorMessage>
-                                                {errors.personName}
-                                            </FormErrorMessage>
-                                        </FormControl>
+                                        <div className='flex flex-col'>
+                                            <label id='select-category' htmlFor='personName' className='font-bold pb-1 pl-2  text-sm text-gray-500'>Whats their name (or nickname😇)</label>
+                                            <div className='flex flex-row text-gray-80 gap-1'>
 
-                                        <FormControl isRequired>
-                                            <FormLabel htmlFor="personPronoun">
-                                                Pronouns
-                                            </FormLabel>
-                                            <SelectControl name="personPronoun">
-                                                <option value="she/her">she/her</option>
-                                                <option value="he/his">he/his</option>
-                                                <option value="they/them">they/them</option>
-                                            </SelectControl>
-                                            <FormErrorMessage>
-                                                {errors.personPronoun}
-                                            </FormErrorMessage>
-                                        </FormControl>
+                                                <input type="text" name='personName' id='personName' className=' flex-grow bg-indigo-50  border-indigo-900 border-spacing-2 text-gray-900 font-bold 
+                                                rounded-xl px-4 py-3 outline-2 mb-3' placeholder='jhon doe' onChange={handleChange} value={values.personName} />
+                                                <select name='personPronoun' id='personPronoun' className='bg-purple-600 border-spacing-2 text-white font-bold 
+                                                rounded-xl px-2 mb-3' placeholder='he/him' onChange={handleChange} value={values.personPronoun} >
+                                                    <option value="she/her">she/her</option>
+                                                    <option value="he/his">he/his</option>
+                                                    <option value="they/them">they/them</option>
+                                                </select>
+                                            </div>
+
+
+                                        </div>
+
+
                                     </>
                                 )}
                                 {values.category === "pet" && (
                                     <>
-                                        <FormControl isRequired>
-                                            <FormLabel htmlFor="petType">
-                                                What type of pet do you have?
-                                            </FormLabel>
-                                            <Field
-                                                as={Input}
-                                                id="petType"
-                                                name="petType"
-                                                type="name"
-                                                variant="filled"
-                                                bg="gray.200"
-                                            />
-                                            <FormErrorMessage>{errors.petType}</FormErrorMessage>
-                                        </FormControl>
-                                        <FormControl isRequired>
-                                            <FormLabel htmlFor="petName">
-                                                What's your pet's name?
-                                            </FormLabel>
-                                            <Field
-                                                as={Input}
-                                                id="petName"
-                                                name="petName"
-                                                type="name"
-                                                variant="filled"
-                                                bg="gray.200"
-                                            />
-                                            <FormErrorMessage>{errors.petName}</FormErrorMessage>
-                                        </FormControl>
+                                        <div className='flex flex-col'>
+
+                                            <label id='select-category' htmlFor='petName' className='font-bold pb-1 pl-2  text-sm text-gray-500'>Whats your pet🐩 name?</label>
+
+                                            <input type="text" name='petName' id='petName' className=' flex-grow bg-indigo-50  border-indigo-900 border-spacing-2 text-gray-900 font-bold 
+                                                rounded-xl px-4 py-3 outline-2 mb-3' placeholder='Browney' onChange={handleChange} value={values.petName} />
+                                        </div>
+
                                     </>
                                 )}
                                 {values.category === "place" && (
@@ -204,8 +171,8 @@ function form() {
                                         </FormControl>
                                     </>
                                 )}
-                                <Button type="submit" colorScheme="purple" width="full">
-                                    Generate Thought
+                                <Button type="submit" className='bg-purple-900  rounded-xl py-2 font-bold text-xl text-white shadow-lg hover:bg-purple-950 duration-150 ease-in-out transition-all'>
+                                    Generate Thought ✨
                                 </Button>
                             </div>
                         </form>
