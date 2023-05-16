@@ -1,26 +1,7 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { Formik, Field } from "formik"
-import {
-    Box,
-    Button,
-    Flex,
-    FormControl,
-    FormLabel,
-    Input,
-    VStack,
-    Spinner,
-    Heading,
-    Text,
-    useColorModeValue,
-    FormErrorMessage,
-    RadioGroup,
-    Radio,
-    Stack,
-} from "@chakra-ui/react"
-
-import { SelectControl } from "formik-chakra-ui"
-import { error } from 'console'
+import {FormErrors} from '../types/formTypes'
 
 function form() {
 
@@ -32,7 +13,6 @@ function form() {
         category: "person",
         personName: "",
         personPronoun: "he/his",
-
         petName: "",
         placeName: "",
         thingName: "",
@@ -56,7 +36,10 @@ function form() {
     return (
 
         <>
-            <Flex justify="center" align='center' h="100%" >
+            <div className="flex h-full w-full items-center justify-center">
+
+
+
 
                 <Formik
                     initialValues={initialValues}
@@ -69,18 +52,27 @@ function form() {
                             values["placeName"],
                             values["thingName"]
                         )
-                        console.log(values)
+
                         resetForm()
                     }}
                     validate={(values) => {
-                        const errors:any = {};
-                        
+                        const errors: FormErrors = {};
+
 
                         if (values.category === "person" && !values.personName) {
                             errors.personName = "name cannot be blank";
-                        } 
+                        }
+                        if (values.category === "pet" && !values.petName) {
+                            errors.petName = "pet name cannot be blank";
+                        }
+                        if (values.category === "place" && !values.placeName) {
+                            errors.placeName = "place name cannot be blank";
+                        }
+                        if (values.category === "thing" && !values.thingName) {
+                            errors.thingName = "thing name cannot be blank";
+                        }
 
-                        console.log(errors)
+
 
                         return errors
                     }}
@@ -90,9 +82,9 @@ function form() {
 
                 // validationSchema={validationSchema}
                 >
-                    {({ handleSubmit, handleChange, values, errors }) => (
+                    {({ handleSubmit, handleChange, values, errors, touched }) => (
                         <form onSubmit={handleSubmit}>
-                            
+
 
                             <div className="flex flex-col gap-3 rounded-3xl p-5 bg-white mb-10">
 
@@ -122,7 +114,7 @@ function form() {
                                             <label id='select-category' htmlFor='personName' className='font-bold pb-1 pl-2  text-sm text-gray-500'>Whats their name (or nickname😇)</label>
                                             <div className='flex flex-row text-gray-80 gap-1'>
 
-                                                <input type="text" name='personName' id='personName' className=' flex-grow bg-indigo-50  border-indigo-900 border-spacing-2 text-gray-900 font-bold 
+                                                <Field type="text" name='personName' id='personName' className=' flex-grow bg-indigo-50  border-indigo-900 border-spacing-2 text-gray-900 font-bold 
                                                 rounded-xl px-4 py-3 outline-2 mb-3' placeholder='jhon doe' onChange={handleChange} value={values.personName} />
                                                 <select name='personPronoun' id='personPronoun' className='bg-purple-600 border-spacing-2 text-white font-bold 
                                                 rounded-xl px-2 mb-3' placeholder='he/him' onChange={handleChange} value={values.personPronoun} >
@@ -130,10 +122,11 @@ function form() {
                                                     <option value="he/his">he/his</option>
                                                     <option value="they/them">they/them</option>
                                                 </select>
+
                                             </div>
-                                            {errors.personName? <div className="text-red-500 text-sm pl-2 font-semibold" >{errors.personName}</div>: ""}
-                                           
-                                            
+                                            {errors.personName && touched.personName ? <div className="text-red-500 text-sm pl-2 font-semibold" >{errors.personName}</div> : ""}
+
+
 
                                         </div>
 
@@ -149,57 +142,42 @@ function form() {
                                             <input type="text" name='petName' id='petName' className=' flex-grow bg-indigo-50  border-indigo-900 border-spacing-2 text-gray-900 font-bold 
                                                 rounded-xl px-4 py-3 outline-2 mb-3' placeholder='Browney' onChange={handleChange} value={values.petName} />
                                         </div>
+                                        {errors.petName && touched.petName ? <div className="text-red-500 text-sm pl-2 font-semibold" >{errors.petName}</div> : " "}
 
                                     </>
                                 )}
                                 {values.category === "place" && (
                                     <>
-                                        <FormControl isRequired>
-                                            <FormLabel htmlFor="placeName">
-                                                What's the name of the place?
-                                            </FormLabel>
-                                            <Field
-                                                as={Input}
-                                                id="placeName"
-                                                name="placeName"
-                                                type="name"
-                                                variant="filled"
-                                                bg="gray.200"
-                                            />
-                                            <FormErrorMessage>
-                                                {errors.placeName}
-                                            </FormErrorMessage>
-                                        </FormControl>
+                                        <div className='flex flex-col'>
+
+                                            <label id='select-category' htmlFor='placeName' className='font-bold pb-1 pl-2  text-sm text-gray-500'>Enter place🌌 name</label>
+
+                                            <Field type="text" name='placeName' id='placeName' className=' flex-grow bg-indigo-50  border-indigo-900 border-spacing-2 text-gray-900 font-bold 
+                                            rounded-xl px-4 py-3 outline-2 mb-3' placeholder='Browney' onChange={handleChange} value={values.placeName} />
+                                            {errors.placeName && touched.placeName ? <div className="text-red-500 text-sm pl-2 font-semibold" >{errors.placeName}</div> : " "}
+                                        </div>
                                     </>
                                 )}
                                 {values.category === "thing" && (
                                     <>
-                                        <FormControl isRequired>
-                                            <FormLabel htmlFor="thingName">
-                                                What's the thing?
-                                            </FormLabel>
-                                            <Field
-                                                as={Input}
-                                                id="thingName"
-                                                name="thingName"
-                                                type="name"
-                                                variant="filled"
-                                                bg="gray.200"
-                                            />
-                                            <FormErrorMessage>
-                                                {errors.thingName}
-                                            </FormErrorMessage>
-                                        </FormControl>
+                                        <div className='flex flex-col'>
+
+                                            <label id='select-category' htmlFor='placeName' className='font-bold pb-1 pl-2  text-sm text-gray-500'>Enter thing🎈 name</label>
+
+                                            <Field type="text" name='thingName' id='thingName' className=' flex-grow bg-indigo-50  border-indigo-900 border-spacing-2 text-gray-900 font-bold rounded-xl px-4 py-3 outline-2 mb-3' placeholder='Balloon' onChange={handleChange} value={values.thingName} />
+                                            {errors.thingName && touched.thingName ? <div className="text-red-500 text-sm pl-2 font-semibold" >{errors.thingName}</div> : " "}
+                                        </div>
                                     </>
                                 )}
-                                <Button type="submit" className='bg-purple-900  rounded-xl py-2 font-bold text-xl text-white shadow-lg hover:bg-purple-950 duration-150 ease-in-out transition-all'>
+                                <button type="submit" className='bg-purple-900  rounded-xl py-2 font-bold text-xl text-white shadow-lg hover:bg-purple-950 duration-150 ease-in-out transition-all'>
                                     Generate Thought ✨
-                                </Button>
+                                </button>
                             </div>
                         </form>
                     )}
                 </Formik>
-            </Flex>
+                \
+            </div>
         </>
     )
 }
