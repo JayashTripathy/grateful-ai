@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { Formik, Field } from "formik"
-import {FormErrors} from '../types/formTypes'
+import { FormErrors } from '../types/formTypes'
 
 function form() {
 
@@ -18,6 +18,46 @@ function form() {
         thingName: "",
     }
 
+    async function generateText(prompt: string) {
+        setGratitude("")
+        setGratitudeLoading(true)
+
+        console.log("await starts")
+        const response = await fetch("/api/generate", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({prompt})
+
+        })
+        console.log("await ends")
+        if (!response.ok) {
+            throw new Error(response.statusText)
+        }
+
+        // This data is a ReadableStream
+        const data = response.body
+        console.log(data)
+        if (!data) {
+            return
+        }
+  
+
+        const reader = data.getReader()
+        const decoder = new TextDecoder()
+        let done = false
+
+        while (!done) {
+            const { value, done: doneReading } = await reader.read()
+            done = doneReading
+            const chunkValue = decoder.decode(value)
+            setGratitude((prev) => prev + chunkValue)
+        }
+
+        
+    }
+
 
     async function handleSubmit(
         category: string,
@@ -27,7 +67,8 @@ function form() {
         placeName: string,
         thingName: string
     ) {
-        console.log(personName)
+        
+        generateText(personName);
     }
     useEffect(() => {
 
