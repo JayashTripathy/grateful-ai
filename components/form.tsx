@@ -20,6 +20,7 @@ import {
 } from "@chakra-ui/react"
 
 import { SelectControl } from "formik-chakra-ui"
+import { error } from 'console'
 
 function form() {
 
@@ -36,6 +37,7 @@ function form() {
         placeName: "",
         thingName: "",
     }
+
 
     async function handleSubmit(
         category: string,
@@ -70,10 +72,27 @@ function form() {
                         console.log(values)
                         resetForm()
                     }}
+                    validate={(values) => {
+                        const errors:any = {};
+                        
+
+                        if (values.category === "person" && !values.personName) {
+                            errors.personName = "name cannot be blank";
+                        } 
+
+                        console.log(errors)
+
+                        return errors
+                    }}
+
+
+
+
                 // validationSchema={validationSchema}
                 >
                     {({ handleSubmit, handleChange, values, errors }) => (
                         <form onSubmit={handleSubmit}>
+                            
 
                             <div className="flex flex-col gap-3 rounded-3xl p-5 bg-white mb-10">
 
@@ -112,7 +131,9 @@ function form() {
                                                     <option value="they/them">they/them</option>
                                                 </select>
                                             </div>
-
+                                            {errors.personName? <div className="text-red-500 text-sm pl-2 font-semibold" >{errors.personName}</div>: ""}
+                                           
+                                            
 
                                         </div>
 
