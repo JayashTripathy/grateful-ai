@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { Formik, Field } from "formik"
 import { FormErrors } from '../types/formTypes'
-
+import { FiCopy } from 'react-icons/fi'
 function form() {
 
     const [gratitude, setGratitude] = useState("")
@@ -17,6 +17,16 @@ function form() {
         placeName: "",
         thingName: "",
     }
+ 
+    const copyContent = async () => {
+      try {
+        await navigator.clipboard.writeText(gratitude);
+        console.log('Content copied to clipboard');
+      } catch (err) {
+        console.error('Failed to copy: ', err);
+      }
+    }
+
 
     async function generateText(prompt: string) {
         setGratitude("")
@@ -28,7 +38,7 @@ function form() {
             headers: {
                 "content-type": "application/json"
             },
-            body: JSON.stringify({prompt})
+            body: JSON.stringify({ prompt })
 
         })
         console.log("await ends")
@@ -38,11 +48,11 @@ function form() {
 
         // This data is a ReadableStream
         const data = response.body
-        console.log(data)
+
         if (!data) {
             return
         }
-  
+
 
         const reader = data.getReader()
         const decoder = new TextDecoder()
@@ -55,7 +65,7 @@ function form() {
             setGratitude((prev) => prev + chunkValue)
         }
 
-        
+        console.log(gratitude)
     }
 
 
@@ -67,8 +77,11 @@ function form() {
         placeName: string,
         thingName: string
     ) {
-        
-        generateText(personName);
+
+        const personPrompt = `Generate a sentence of gratitude in  30 words for ${personName}  beacuse he is the most supportive person . Their pronouns ${personPronoun}. make this as if i am talking to ${personName}`
+
+        generateText(personPrompt);
+
     }
     useEffect(() => {
 
@@ -127,7 +140,7 @@ function form() {
                         <form onSubmit={handleSubmit}>
 
 
-                            <div className="flex flex-col gap-3 rounded-3xl p-5 bg-white mb-10">
+                            <div className="flex flex-col gap-3 rounded-3xl p-5 bg-white mb-3 max-w-[30rem]">
 
 
                                 <div className='flex flex-col text-gray-800'>
@@ -214,10 +227,14 @@ function form() {
                                     Generate Thought ✨
                                 </button>
                             </div>
+                            {gratitude ?
+                                <div id='generatedText' className="relative bg-purple-800 text-white p-4 text-center rounded-xl text-sm font-bold max-w-[30rem]">{gratitude}
+                                <button className="bg-white text-black rounded-full p-2 absolute top-[-10px] right-[-10px] drop-shadow-xl" onClick={copyContent}><FiCopy size="16"/></button></div>
+                                : ""}
                         </form>
                     )}
                 </Formik>
-                \
+                
             </div>
         </>
     )
