@@ -17,14 +17,14 @@ function form() {
         placeName: "",
         thingName: "",
     }
- 
+
     const copyContent = async () => {
-      try {
-        await navigator.clipboard.writeText(gratitude);
-        console.log('Content copied to clipboard');
-      } catch (err) {
-        console.error('Failed to copy: ', err);
-      }
+        try {
+            await navigator.clipboard.writeText(gratitude);
+            console.log('Content copied to clipboard');
+        } catch (err) {
+            console.error('Failed to copy: ', err);
+        }
     }
 
 
@@ -223,19 +223,23 @@ function form() {
                                         </div>
                                     </>
                                 )}
-                                <button type="submit" className='bg-purple-900  rounded-xl py-2 font-bold text-xl text-white shadow-lg hover:bg-purple-950 duration-150 ease-in-out transition-all'>
+                                
+                                <button type="submit" className='bg-purple-900  rounded-xl py-2 font-bold text-xl text-white shadow-lg hover:bg-purple-950 duration-150 ease-in-out transition-all' disabled={gratitudeLoading} >
+                                
                                     Generate Thought ✨
                                 </button>
+
                             </div>
                             {gratitude ?
                                 <div id='generatedText' className="relative bg-purple-800 text-white p-4 text-center rounded-xl text-sm font-bold max-w-[30rem]">{gratitude}
-                                <button className="bg-white text-black rounded-full p-2 absolute top-[-10px] right-[-10px] drop-shadow-xl" onClick={copyContent}><FiCopy size="16"/></button></div>
+                                    <button className="bg-white text-black rounded-full p-2 absolute top-[-10px] right-[-10px] drop-shadow-xl" onClick={copyContent}><FiCopy size="16" /></button></div>
                                 : ""}
-                        </form>
-                    )}
-                </Formik>
-                
-            </div>
+                        </form >
+                    )
+                    }
+                </Formik >
+
+            </div >
         </>
     )
 }
