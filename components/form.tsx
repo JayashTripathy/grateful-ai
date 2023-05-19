@@ -16,6 +16,7 @@ function form() {
         petName: "",
         placeName: "",
         thingName: "",
+        reason: "",
     }
 
     const copyContent = async () => {
@@ -32,7 +33,7 @@ function form() {
         setGratitude("")
         setGratitudeLoading(true)
 
-        
+
         const response = await fetch("/api/generate", {
             method: "POST",
             headers: {
@@ -75,10 +76,11 @@ function form() {
         personPronoun: string,
         petName: string,
         placeName: string,
-        thingName: string
+        thingName: string,
+        reason: string
     ) {
 
-        const personPrompt = `Generate a sentence of gratitude in  30 words for ${personName}  beacuse he is the most supportive person . Their pronouns ${personPronoun}. make this as if i am talking to ${personName}`
+        const personPrompt = `Generate a unique sentence of gratitude in  for ${personName}  beacuse ${reason} . Their pronouns ${personPronoun}. make this as if i am talking to ${personName}`
 
         generateText(personPrompt);
 
@@ -104,7 +106,8 @@ function form() {
                             values["personPronoun"],
                             values["petName"],
                             values["placeName"],
-                            values["thingName"]
+                            values["thingName"],
+                            values['reason']
                         )
 
                         resetForm()
@@ -137,22 +140,22 @@ function form() {
                 // validationSchema={validationSchema}
                 >
                     {({ handleSubmit, handleChange, values, errors, touched }) => (
-                        <form onSubmit={handleSubmit} className=''>
+                        <form onSubmit={handleSubmit} className='mb-5'>
 
 
-                            <div className="flex flex-col gap-3 rounded-3xl p-5 bg-white mb-3 max-w-[30rem] ">
+                            <div className="flex flex-col gap-3 mb-3 rounded-3xl p-5 bg-white  max-w-[30rem] ">
 
 
                                 <div className='flex flex-col text-gray-800'>
                                     <div className="flex flex-col gap-0   pb-4 ">
 
-                                        <h1 className='text-md font-bold leading-[.5rem]  text-gray-600'>create a </h1>
+                                        <h1 className='text-md font-bold leading-[.5rem]  text-gray-600'>generate a </h1>
                                         <h1 className='text-2xl md:text-5xl font-black block md:leading-[3.5rem] animate-text bg-gradient-to-r from-teal-700
-                                         via-purple-800 to-orange-400 bg-clip-text text-transparent  '>Grateful thought</h1>
+                                         via-purple-800 to-orange-400 bg-clip-text text-transparent  '>Grateful Message</h1>
                                     </div>
-                                    <label id='select-category' htmlFor='category' className='font-bold pb-1 pl-2  text-sm text-gray-500'>Select an option</label>
+                                    <label id='select-category' htmlFor='category' className='font-bold pb-1 pl-2   text-gray-500 text-xs md:text-lg'>Select an option</label>
                                     <select name="category" id="category"
-                                        className=' bg-indigo-50  border-indigo-900 border-spacing-2 text-gray-900 font-bold rounded-xl px-4 py-3 outline-dashed outline-2 mb-3'
+                                        className='text-xs md:text-base bg-indigo-50  border-indigo-900 border-spacing-2 text-gray-900 font-bold rounded-xl px-4 py-3 outline-dashed outline-2 mb-3'
                                         onChange={handleChange} value={values.category} >
                                         <option value="person">Person</option>
                                         <option value="pet">Pet</option>
@@ -164,17 +167,18 @@ function form() {
                                 {values.category === "person" && (
                                     <>
                                         <div className='flex flex-col'>
-                                            <label id='select-category' htmlFor='personName' className='font-bold pb-1 pl-2  text-sm text-gray-500'>Whats their name (or nickname😇)</label>
                                             <div className=' text-gray-80 gap-1 relative'>
+                                                <label id='select-category' htmlFor='personName' className='font-bold pb-1 pl-2   text-gray-500 text-xs md:text-sm'>Whats their name (or nickname😇)</label>
 
                                                 <Field type="text" name='personName' id='personName' className=' w-full bg-indigo-50  border-indigo-900 border-spacing-2 text-gray-900 font-bold 
-                                                rounded-xl px-4 py-3 outline-2 mb-3' placeholder='jhon doe' onChange={handleChange} value={values.personName} />
+                                                rounded-xl px-4 py-3 outline-2 mb-3 text-xs md:text-base' placeholder='jhon doe' onChange={handleChange} value={values.personName} />
                                                 <select name='personPronoun' id='personPronoun' className='absolute bottom-[-12px] right-0   bg-purple-600 border-spacing-2 text-white font-bold 
                                                 rounded-full px-2 py-[.1rem] mb-3 text-sm  md:text-md' placeholder='he/him' onChange={handleChange} value={values.personPronoun} >
                                                     <option value="she/her">she/her</option>
                                                     <option value="he/his">he/his</option>
                                                     <option value="they/them">they/them</option>
                                                 </select>
+
 
                                             </div>
                                             {errors.personName && touched.personName ? <div className="text-red-500 text-sm pl-2 font-semibold" >{errors.personName}</div> : ""}
@@ -222,6 +226,13 @@ function form() {
                                         </div>
                                     </>
                                 )}
+                                <div>
+
+                                    <label id='select-category' htmlFor='reason' className='font-bold pb-1 pl-2  text-sm text-gray-500'>Because...❓</label>
+
+                                    <Field type="text" name='reason' id='reason' className=' w-full bg-indigo-50  border-indigo-900 border-spacing-2 text-gray-900 font-bold 
+                                 rounded-xl px-4 py-3 outline-2 mb-3 text-xs md:text-base' placeholder='he helped in my assignment' onChange={handleChange} value={values.reason} />
+                                </div>
 
                                 <button type="submit" className='bg-purple-900  rounded-xl py-2 font-bold text-xl text-white shadow-lg hover:bg-purple-950 duration-150 ease-in-out transition-all flex justify-center items-center' disabled={gratitudeLoading} >
 
