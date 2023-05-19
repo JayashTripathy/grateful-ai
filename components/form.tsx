@@ -176,7 +176,7 @@ function form() {
                                 <div className='flex flex-col text-gray-800'>
                                     <div className="flex flex-col gap-0   pb-4 ">
 
-                                        <h1 className='text-md font-bold leading-[.5rem]  text-gray-600'>generate a special </h1>
+                                        <h1 className='text-md font-bold leading-[.5rem]  text-gray-600 md:mb-0 mb-1'>generate a special </h1>
                                         <h1 className='text-2xl md:text-5xl font-black block md:leading-[3.5rem] animate-text bg-gradient-to-r from-teal-700
                                          via-purple-800 to-orange-400 bg-clip-text text-transparent  '>Grateful Message</h1>
                                     </div>

@@ -10,9 +10,9 @@ function navbar() {
                <div className="font-semibold text-2xl md:text-3xl  ">Grateful.<span className='font-extrabold'>AI💙</span></div>
             </div>
 
-            <Link href="https://github.com/JayashTripathy/grateful-ai" className=' bg-gray-900 text-white px-5 py-3 rounded-full  flex items-center justify-center gap-3 '>
+            <Link href="https://github.com/JayashTripathy/grateful-ai" target='_blank' className='bg-gray-900 text-white px-5 py-3 rounded-full  flex items-center justify-center gap-3 '>
               <div className="font-bold hidden md:visible">Give a star on </div>
-                <SiGithub size="25" />
+                <SiGithub size="18" />
             </Link>
           
         </nav>
