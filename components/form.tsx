@@ -80,9 +80,29 @@ function form() {
         reason: string
     ) {
 
-        const personPrompt = `Generate a unique sentence of gratitude in  for ${personName}  beacuse ${reason} . Their pronouns ${personPronoun}. make this as if i am talking to ${personName}`
+        const personPrompt = `Generate a unique sentence of gratitude for ${personName}  beacuse ${reason} . Their pronouns ${personPronoun}. make this as if i am talking to ${personName}`
+        const petPrompt = `Generate a sentence of gratitude for ${petName} who is a pet ${reason}.`
+        const placePrompt = `Create a unique sentence of gratitude for my place ${placeName} because ${reason}.`
 
-        generateText(personPrompt);
+        // const thingPrompt = `Create a unique sentence of gratitude for this ${placeName} because ${reason}.`
+
+        if (category === "person" && personName) {
+
+            generateText(personPrompt);
+        }
+        if (category === "pet" && petPrompt) {
+
+            generateText(petPrompt);
+        }
+        if (category === "place" && placePrompt) {
+
+            generateText(placePrompt);
+        }
+        
+        // if (category === "thing" && thingPrompt) {
+
+        //     generateText(thingPrompt);
+        // }
 
     }
     useEffect(() => {
@@ -110,7 +130,11 @@ function form() {
                             values['reason']
                         )
 
-                        resetForm()
+                        resetForm({values: {
+                            ...initialValues, 
+                            category: values.category,
+                        }})
+                        
                     }}
                     validate={(values) => {
                         const errors: FormErrors = {};
@@ -129,6 +153,9 @@ function form() {
                             errors.thingName = "thing name cannot be blank";
                         }
 
+                        if (!values.reason) {
+                            errors.reason = "this feild cannot be blank";
+                        }
 
 
                         return errors
@@ -149,7 +176,7 @@ function form() {
                                 <div className='flex flex-col text-gray-800'>
                                     <div className="flex flex-col gap-0   pb-4 ">
 
-                                        <h1 className='text-md font-bold leading-[.5rem]  text-gray-600'>generate a </h1>
+                                        <h1 className='text-md font-bold leading-[.5rem]  text-gray-600'>generate a special </h1>
                                         <h1 className='text-2xl md:text-5xl font-black block md:leading-[3.5rem] animate-text bg-gradient-to-r from-teal-700
                                          via-purple-800 to-orange-400 bg-clip-text text-transparent  '>Grateful Message</h1>
                                     </div>
@@ -158,9 +185,9 @@ function form() {
                                         className='text-xs md:text-base bg-indigo-50  border-indigo-900 border-spacing-2 text-gray-900 font-bold rounded-xl px-4 py-3 outline-dashed outline-2 mb-3'
                                         onChange={handleChange} value={values.category} >
                                         <option value="person">Person</option>
-                                        <option value="pet">Pet</option>
                                         <option value="place">Place</option>
-                                        <option value="thing">Thing</option>
+                                        <option value="pet">Pet</option>
+                                        {/* <option value="thing">Thing</option> */}
                                     </select>
 
                                 </div>
@@ -169,6 +196,7 @@ function form() {
                                         <div className='flex flex-col'>
                                             <div className=' text-gray-80 gap-1 relative'>
                                                 <label id='select-category' htmlFor='personName' className='font-bold pb-1 pl-2   text-gray-500 text-xs md:text-sm'>Whats their name (or nickname😇)</label>
+                                                {errors.personName && touched.personName ? <div className="text-red-500 text-xs pl-2 font-semibold" >{errors.personName}</div> : ""}
 
                                                 <Field type="text" name='personName' id='personName' className=' w-full bg-indigo-50  border-indigo-900 border-spacing-2 text-gray-900 font-bold 
                                                 rounded-xl px-4 py-3 outline-2 mb-3 text-xs md:text-base' placeholder='jhon doe' onChange={handleChange} value={values.personName} />
@@ -181,9 +209,14 @@ function form() {
 
 
                                             </div>
-                                            {errors.personName && touched.personName ? <div className="text-red-500 text-sm pl-2 font-semibold" >{errors.personName}</div> : ""}
 
+                                            <div>
 
+                                                <label id='select-category' htmlFor='reason' className='font-bold pb-1 pl-2  text-sm text-gray-500'>Because...❓</label>
+                                                {errors.reason && touched.reason ? <div className="text-red-500 text-xs pl-2 font-semibold" >{errors.reason}</div> : ""}
+
+                                                <Field type="text" name='reason' id='reason' className=' w-full bg-indigo-50  border-indigo-900 border-spacing-2 text-gray-900 font-bold rounded-xl px-4 py-3 outline-2 mb-3 text-xs md:text-base' placeholder='he helped in my assignment' onChange={handleChange} value={values.reason} />
+                                            </div>
 
                                         </div>
 
@@ -196,11 +229,17 @@ function form() {
 
                                             <label id='select-category' htmlFor='petName' className='font-bold pb-1 pl-2  text-sm text-gray-500'>Whats your pet🐩 name?</label>
 
+                                            {errors.petName && touched.petName ? <div className="text-red-500 text-xs pl-2 font-semibold" >{errors.petName}</div> : " "}
                                             <input type="text" name='petName' id='petName' className=' flex-grow bg-indigo-50  border-indigo-900 border-spacing-2 text-gray-900 font-bold 
-                                                rounded-xl px-4 py-3 outline-2 mb-3' placeholder='Browney' onChange={handleChange} value={values.petName} />
+                                                rounded-xl px-4 py-3 outline-2 ' placeholder='browney' onChange={handleChange} value={values.petName} />
                                         </div>
-                                        {errors.petName && touched.petName ? <div className="text-red-500 text-sm pl-2 font-semibold" >{errors.petName}</div> : " "}
+                                        <div>
 
+                                            <label id='select-category' htmlFor='reason' className='font-bold pb-1 pl-2  text-sm text-gray-500'>Pet type❓</label>
+                                            {errors.reason && touched.reason ? <div className="text-red-500 text-xs pl-2 font-semibold" >{errors.reason}</div> : ""}
+
+                                            <Field type="text" name='reason' id='reason' className=' w-full bg-indigo-50  border-indigo-900 border-spacing-2 text-gray-900 font-bold rounded-xl px-4 py-3 outline-2 mb-3 text-xs md:text-base' placeholder='dog' onChange={handleChange} value={values.reason} />
+                                        </div>
                                     </>
                                 )}
                                 {values.category === "place" && (
@@ -209,34 +248,44 @@ function form() {
 
                                             <label id='select-category' htmlFor='placeName' className='font-bold pb-1 pl-2  text-sm text-gray-500'>Enter place🌌 name</label>
 
+                                            {errors.placeName && touched.placeName ? <div className="text-red-500 text-xs pl-2 font-semibold" >{errors.placeName}</div> : " "}
                                             <Field type="text" name='placeName' id='placeName' className=' flex-grow bg-indigo-50  border-indigo-900 border-spacing-2 text-gray-900 font-bold 
-                                            rounded-xl px-4 py-3 outline-2 mb-3' placeholder='Browney' onChange={handleChange} value={values.placeName} />
-                                            {errors.placeName && touched.placeName ? <div className="text-red-500 text-sm pl-2 font-semibold" >{errors.placeName}</div> : " "}
+                                            rounded-xl px-4 py-3 outline-2 ' placeholder='Bhilai' onChange={handleChange} value={values.placeName} />
+                                        </div>
+
+                                        <div>
+
+                                            <label id='select-category' htmlFor='reason' className='font-bold pb-1 pl-2  text-sm text-gray-500'>Because...❓</label>
+                                            {errors.reason && touched.reason ? <div className="text-red-500 text-xs pl-2 font-semibold" >{errors.reason}</div> : ""}
+
+                                            <Field type="text" name='reason' id='reason' className=' w-full bg-indigo-50  border-indigo-900 border-spacing-2 text-gray-900 font-bold rounded-xl px-4 py-3 outline-2 mb-3 text-xs md:text-base' placeholder='it is peaceful' onChange={handleChange} value={values.reason} />
                                         </div>
                                     </>
                                 )}
-                                {values.category === "thing" && (
+                                {/* {values.category === "thing" && (
                                     <>
                                         <div className='flex flex-col'>
 
                                             <label id='select-category' htmlFor='placeName' className='font-bold pb-1 pl-2  text-sm text-gray-500'>Enter thing🎈 name</label>
 
-                                            <Field type="text" name='thingName' id='thingName' className=' flex-grow bg-indigo-50  border-indigo-900 border-spacing-2 text-gray-900 font-bold rounded-xl px-4 py-3 outline-2 mb-3' placeholder='Balloon' onChange={handleChange} value={values.thingName} />
+                                            <Field type="text" name='thingName' id='thingName' className=' flex-grow bg-indigo-50  border-indigo-900 border-spacing-2 text-gray-900 font-bold rounded-xl px-4 py-3 outline-2 ' placeholder='Balloon' onChange={handleChange} value={values.thingName} />
                                             {errors.thingName && touched.thingName ? <div className="text-red-500 text-sm pl-2 font-semibold" >{errors.thingName}</div> : " "}
                                         </div>
+
+                                        <div>
+
+                                            <label id='select-category' htmlFor='reason' className='font-bold pb-1 pl-2  text-sm text-gray-500'>Because...❓</label>
+                                            {errors.reason && touched.reason ? <div className="text-red-500 text-xs pl-2 font-semibold" >{errors.reason}</div> : ""}
+
+                                            <Field type="text" name='reason' id='reason' className=' w-full bg-indigo-50  border-indigo-900 border-spacing-2 text-gray-900 font-bold rounded-xl px-4 py-3 outline-2 mb-3 text-xs md:text-base' placeholder='it is read and beautiful' onChange={handleChange} value={values.reason} />
+                                        </div>
                                     </>
-                                )}
-                                <div>
+                                )} */}
 
-                                    <label id='select-category' htmlFor='reason' className='font-bold pb-1 pl-2  text-sm text-gray-500'>Because...❓</label>
-
-                                    <Field type="text" name='reason' id='reason' className=' w-full bg-indigo-50  border-indigo-900 border-spacing-2 text-gray-900 font-bold 
-                                 rounded-xl px-4 py-3 outline-2 mb-3 text-xs md:text-base' placeholder='he helped in my assignment' onChange={handleChange} value={values.reason} />
-                                </div>
 
                                 <button type="submit" className='bg-purple-900  rounded-xl py-2 font-bold text-xl text-white shadow-lg hover:bg-purple-950 duration-150 ease-in-out transition-all flex justify-center items-center' disabled={gratitudeLoading} >
 
-                                    {!gratitudeLoading ? "Generate Thought ✨" :
+                                    {!gratitudeLoading ? "Generate Msg ✨" :
 
                                         <span className="inline-block animate-load rounded-full p-2  text-white text-sm">
                                             <svg className="w-6 h-6 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
